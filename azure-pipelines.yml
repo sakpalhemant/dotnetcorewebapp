@@ -13,8 +13,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- checkout: self
-  fetchDepth: 0
 
 - task: SonarCloudPrepare@4
   inputs:
@@ -32,20 +30,15 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: '**/*TestProject/*.csproj'
+    projects: '**/TestProject/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
   displayName: 'dotnet build Test Project'
 
-  # Publish test results to Azure Pipelines.
-- task: PublishTestResults@2
-  inputs:
-    testResultsFiles: '**/TEST-*.xml'
-    searchFolder: '$(System.DefaultWorkingDirectory)' 
- 
 # Publish code coverage results v1
+# Publish Cobertura or JaCoCo code coverage results from a build.
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml.'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/coverage.xml.'
     pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/'
   displayName: 'Code Coverage'
 
@@ -63,7 +56,7 @@ steps:
 - task: SonarCloudPublish@4
   inputs:
     pollingTimeoutSec: '600'
-
+    
 # - task: AdvancedSecurity-Codeql-Init@1
 #   inputs:
 #     enableAutomaticCodeQLInstall: true
@@ -109,7 +102,6 @@ steps:
     sourceFolder: '$(Build.SourcesDirectory)'
     contents: '**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
-
 # - task: PublishBuildArtifacts@1
 #   inputs:
 #     pathToPublish: '$(Build.ArtifactStagingDirectory)'
