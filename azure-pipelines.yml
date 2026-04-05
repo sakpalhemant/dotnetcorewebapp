@@ -40,8 +40,8 @@ steps:
 # Publish Cobertura or JaCoCo code coverage results from a build.
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/TestProject/coverage.xml.'
-    pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/TestProject'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/coverage.xml.'
+    pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/'
   displayName: 'Code Coverage'
 
 - task: PublishPipelineArtifact@1
