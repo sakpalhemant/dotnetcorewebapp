@@ -40,7 +40,7 @@ steps:
 - task: PublishTestResults@2
   inputs:
       testResultsFormat: 'VSTest'
-      testResultsFiles: '**/*.trx'
+      testResultsFiles: '$(System.DefaultWorkingDirectory)/TestProject/*.trx'
       searchFolder: '$(Build.SourcesDirectory)/TestResults'
       mergeTestResults: true
 
