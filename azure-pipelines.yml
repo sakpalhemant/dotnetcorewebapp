@@ -31,7 +31,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: '$(System.DefaultWorkingDirectory)/*.csproj'
+    projects: '$(System.DefaultWorkingDirectory)/TestProject/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
     publishtestResults: true
   displayName: 'Run unit tests - $(Build.BuildNumber)'
@@ -41,7 +41,7 @@ steps:
 - task: PublishCodeCoverageResults@2
   inputs:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/TestProject/coverage.xml'
-    pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/'
+    pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/TestProject'
    
 
 - task: SonarCloudAnalyze@4
