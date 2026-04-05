@@ -31,7 +31,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: '$(System.DefaultWorkingDirectory)/TestProject/*.csproj'
+    projects: '$(System.DefaultWorkingDirectory)/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
     publishtestResults: true
   displayName: 'Run unit tests - $(Build.BuildNumber)'
