@@ -41,6 +41,7 @@ steps:
 - task: PublishCodeCoverageResults@2
   inputs:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/TestProject/coverage.xml'
+    pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/'
    
 
 - task: SonarCloudAnalyze@4
