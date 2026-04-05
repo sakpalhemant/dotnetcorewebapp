@@ -21,8 +21,8 @@ steps:
     SonarQube: 'sonarqubecloud'
     organization: 'devops-anil-1'
     scannerMode: 'dotnet'
-    projectKey: 'devops-anil_Dotnetcorewebapi'
-    projectName: 'Dotnetcorewebapi'
+    projectKey: 'devops-anil_testwebProject'
+    projectName: 'testwebProject'
 
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
