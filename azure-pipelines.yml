@@ -37,11 +37,18 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
   displayName: 'dotnet build Test Project'
 
+- task: DotNetCoreCLI@2
+  inputs:
+    azureSubscription: 'Azure subscription 1(139b3f02-32e9-450c-a8b4-08bf6969a53d)'
+    command: 'test'
+    projects: '''**/*/*.csproj'''
+
 # Publish code coverage results v1
 # Publish Cobertura or JaCoCo code coverage results from a build.
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/TestProject/coverage.xml'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/TestProject/coverage.xml'
+   
 
 - task: SonarCloudAnalyze@4
   inputs:
