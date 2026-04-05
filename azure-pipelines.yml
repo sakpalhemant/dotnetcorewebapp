@@ -13,8 +13,6 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-
-
 - checkout: self
   fetchDepth: 0
 
@@ -42,7 +40,7 @@ steps:
 # Publish Cobertura or JaCoCo code coverage results from a build.
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/TestProject/coverage.xml'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/TestProject/coverage.xml'
    
 
 - task: SonarCloudAnalyze@4
