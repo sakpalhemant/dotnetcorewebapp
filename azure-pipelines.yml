@@ -32,7 +32,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: '**/TestProject/*.csproj'
+    projects: '**/*TestProject/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
   displayName: 'dotnet build Test Project'
 
@@ -45,7 +45,7 @@ steps:
 # Publish code coverage results v1
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/coverage.xml.'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml.'
     pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/'
   displayName: 'Code Coverage'
 
