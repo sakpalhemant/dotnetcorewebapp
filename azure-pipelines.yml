@@ -31,10 +31,10 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: '**/*/*.csproj'
+    projects: '$(System.DefaultWorkingDirectory)/TestProject/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
-  displayName: 'dotnet build Test Project'
-
+    publishtestResults: true
+  displayName: 'Run unit tests - $(Build.BuildNumber)'
 
 # Publish code coverage results v1
 # Publish Cobertura or JaCoCo code coverage results from a build.
