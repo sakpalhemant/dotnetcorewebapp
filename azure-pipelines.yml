@@ -13,16 +13,15 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- checkout: self
-  fetchDepth: 0
 
 - task: SonarCloudPrepare@4
   inputs:
     SonarQube: 'sonarqubecloud'
     organization: 'devops-anil-1'
     scannerMode: 'dotnet'
-    projectKey: 'devops-anil_testwebProject'
+    projectKey: 'ddevops-anil_testwebProject'
     projectName: 'testwebProject'
+
 
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
@@ -33,25 +32,21 @@ steps:
     command: test
     projects: '**/TestProject/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
-    publishtestResults: true
-  displayName: 'Run unit tests - $(Build.BuildNumber)'
-
-
-- task: PublishTestResults@2
-  inputs:
-      testResultsFormat: 'VSTest'
-      testResultsFiles: '**/TestProject/*.trx'
-      searchFolder: '$(Build.SourcesDirectory)/TestResults'
-      mergeTestResults: true
-
+  displayName: 'dotnet build Test Project'
 
 # Publish code coverage results v1
 # Publish Cobertura or JaCoCo code coverage results from a build.
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/coverage.xml'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/coverage.xml.'
     pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/'
-   
+  displayName: 'Code Coverage'
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'mywebapp'
+    publishLocation: 'pipeline'
 
 - task: SonarCloudAnalyze@4
   inputs:
@@ -89,28 +84,27 @@ steps:
 #   inputs:
 #     SarifsInputDirectory: '$(Build.SolutionDirectory)/.gdn/'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: publish
-    publishWebProjects: True
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: publish
+#     publishWebProjects: True
+#     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+#     zipAfterPublish: True
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'myWebAPI'
-    publishLocation: 'pipeline'
+# - task: PublishPipelineArtifact@1
+#   inputs:
+#     targetPath: '$(Build.ArtifactStagingDirectory)' 
+#     artifactName: 'myWebAPP'
+
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
     contents: '**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)'
-    artifactName: drop1
+# - task: PublishBuildArtifacts@1
+#   inputs:
+#     pathToPublish: '$(Build.ArtifactStagingDirectory)'
+#     artifactName: drop1
 # - task: PublishBuildArtifacts@1
 #   inputs:
 #     pathToPublish: '$(Build.ArtifactStagingDirectory)'
@@ -135,4 +129,3 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
     buildContext: ' .'
-
