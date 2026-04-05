@@ -36,6 +36,15 @@ steps:
     publishtestResults: true
   displayName: 'Run unit tests - $(Build.BuildNumber)'
 
+
+- task: PublishTestResults@2
+  inputs:
+      testResultsFormat: 'VSTest'
+      testResultsFiles: '**/*.trx'
+      searchFolder: '$(Build.SourcesDirectory)/TestResults'
+      mergeTestResults: true
+
+
 # Publish code coverage results v1
 # Publish Cobertura or JaCoCo code coverage results from a build.
 - task: PublishCodeCoverageResults@2
