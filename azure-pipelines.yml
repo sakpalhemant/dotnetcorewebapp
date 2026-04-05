@@ -33,7 +33,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: '**/*/*.csproj'
+    projects: '**/TestProject/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
   displayName: 'dotnet build Test Project'
 
@@ -42,7 +42,7 @@ steps:
 # Publish Cobertura or JaCoCo code coverage results from a build.
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/*/*/coverage.xml'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/TestProject/coverage.xml'
    
 
 - task: SonarCloudAnalyze@4
