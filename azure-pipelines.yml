@@ -31,7 +31,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: test
-    projects: '$(System.DefaultWorkingDirectory)/TestProject/*.csproj'
+    projects: '**/TestProject/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
     publishtestResults: true
   displayName: 'Run unit tests - $(Build.BuildNumber)'
@@ -40,7 +40,7 @@ steps:
 - task: PublishTestResults@2
   inputs:
       testResultsFormat: 'VSTest'
-      testResultsFiles: '$(System.DefaultWorkingDirectory)/TestProject/*.trx'
+      testResultsFiles: '**/TestProject/*.trx'
       searchFolder: '$(Build.SourcesDirectory)/TestResults'
       mergeTestResults: true
 
@@ -49,8 +49,8 @@ steps:
 # Publish Cobertura or JaCoCo code coverage results from a build.
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/TestProject/coverage.xml'
-    pathToSources: '$(System.DefaultWorkingDirectory)/TestProject'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/coverage.xml'
+    pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/'
    
 
 - task: SonarCloudAnalyze@4
@@ -100,7 +100,7 @@ steps:
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)' 
     artifactName: 'myWebAPI'
-
+    publishLocation: 'pipeline'
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(Build.SourcesDirectory)'
