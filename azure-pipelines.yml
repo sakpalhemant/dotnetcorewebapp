@@ -48,6 +48,11 @@ steps:
     artifact: 'mywebapp'
     publishLocation: 'pipeline'
 
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: $(System.DefaultWorkingDirectory)/bin/dotnetcorewebapp
+    artifactName: WebApp
+
 - task: SonarCloudAnalyze@4
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
