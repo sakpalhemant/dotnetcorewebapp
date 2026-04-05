@@ -41,7 +41,7 @@ steps:
 - task: PublishCodeCoverageResults@2
   inputs:
     summaryFileLocation: '$(System.DefaultWorkingDirectory)/TestProject/coverage.xml'
-    pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/TestProject'
+    pathToSources: '$(System.DefaultWorkingDirectory)/TestProject'
    
 
 - task: SonarCloudAnalyze@4
@@ -98,10 +98,10 @@ steps:
     contents: '**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
     targetFolder: '$(Build.ArtifactStagingDirectory)'
 
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     pathToPublish: '$(Build.ArtifactStagingDirectory)'
-#     artifactName: drop1
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: drop1
 # - task: PublishBuildArtifacts@1
 #   inputs:
 #     pathToPublish: '$(Build.ArtifactStagingDirectory)'
