@@ -49,10 +49,10 @@ steps:
     publishLocation: 'pipeline'
     
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: $(System.DefaultWorkingDirectory)/dotnetcorewebapp
-    artifactName: WebApp
+# - task: PublishPipelineArtifact@1
+#   inputs:
+#     targetPath: $(System.DefaultWorkingDirectory)/dotnetcorewebapp
+#     artifactName: WebApp
 
 - task: SonarCloudAnalyze@4
   inputs:
@@ -94,7 +94,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
-    publishWebProjects: True
+    publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
 
