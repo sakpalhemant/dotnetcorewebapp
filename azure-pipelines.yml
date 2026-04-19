@@ -42,26 +42,33 @@ steps:
     pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/'
   displayName: 'Code Coverage'
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'mywebapp'
-    publishLocation: 'pipeline'
-    
-
-# - task: PublishPipelineArtifact@1
-#   inputs:
-#     targetPath: $(System.DefaultWorkingDirectory)/dotnetcorewebapp
-#     artifactName: WebApp
 
 - task: SonarCloudAnalyze@4
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
 
-
 - task: SonarCloudPublish@4
   inputs:
     pollingTimeoutSec: '600'
+# - task: PublishPipelineArtifact@1
+#   inputs:
+#     targetPath: '$(Pipeline.Workspace)'
+#     artifact: 'mywebapp'
+#     publishLocation: 'pipeline'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: false
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+    
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
+
     
 # - task: AdvancedSecurity-Codeql-Init@1
 #   inputs:
@@ -91,12 +98,7 @@ steps:
 #   inputs:
 #     SarifsInputDirectory: '$(Build.SolutionDirectory)/.gdn/'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: publish
-    publishWebProjects: false
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: True
+
 
 # - task: PublishPipelineArtifact@1
 #   inputs:
