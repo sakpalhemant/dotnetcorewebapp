@@ -47,6 +47,7 @@ steps:
     targetPath: '$(Pipeline.Workspace)'
     artifact: 'mywebapp'
     publishLocation: 'pipeline'
+    
 
 - task: PublishPipelineArtifact@1
   inputs:
