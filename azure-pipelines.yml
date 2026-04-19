@@ -50,6 +50,7 @@ steps:
 - task: SonarCloudPublish@4
   inputs:
     pollingTimeoutSec: '600'
+
 # - task: PublishPipelineArtifact@1
 #   inputs:
 #     targetPath: '$(Pipeline.Workspace)'
@@ -62,13 +63,13 @@ steps:
     publishWebProjects: false
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
-    
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
+    ArtifactName: 'MyWebAPP'
     PathtoPublish: '$(build.artifactstagingdirectory)'
   condition: succeededOrFailed()
-
     
 # - task: AdvancedSecurity-Codeql-Init@1
 #   inputs:
@@ -99,11 +100,6 @@ steps:
 #     SarifsInputDirectory: '$(Build.SolutionDirectory)/.gdn/'
 
 
-
-# - task: PublishPipelineArtifact@1
-#   inputs:
-#     targetPath: '$(Build.ArtifactStagingDirectory)' 
-#     artifactName: 'myWebAPP'
 
 - task: CopyFiles@2
   inputs:
