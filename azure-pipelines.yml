@@ -68,8 +68,8 @@ steps:
   displayName: 'Publish Artifact'
   inputs:
     ArtifactName: 'MyWebAPP'
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()
+    TargetPath: '$(Build.ArtifactStagingDirectory)' 
+
     
 # - task: AdvancedSecurity-Codeql-Init@1
 #   inputs:
