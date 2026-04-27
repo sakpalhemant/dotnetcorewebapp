@@ -1,0 +1,28 @@
+jobs:
+- deployment:
+  environment: musicCarnivalProd
+  pool:
+    name: musicCarnivalProdPool 
+  strategy:                 
+    canary:     
+      increments: [10,20] 
+      preDeploy:                                    
+        steps:          
+        - script: initialize, cleanup....  
+      deploy:            
+        steps:
+        - script: echo deploy updates...
+      routeTraffic:
+        steps:
+        - script: echo routing traffic...
+      postRouteTaffic:
+        pool: server
+        steps:          
+        - script: echo monitor application health...  
+      on:
+        failure:
+          steps:
+          - script: echo perform rollback actions.     
+        success:
+          steps:
+          - script: echo checks passed, notify...
