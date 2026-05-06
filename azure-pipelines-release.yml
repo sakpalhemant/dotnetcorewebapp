@@ -1,28 +1,65 @@
+# jobs:
+# - deployment:
+#   environment: musicCarnivalProd
+#   pool:
+#     name: musicCarnivalProdPool 
+#   strategy:                 
+#     canary:     
+#       increments: [10,20] 
+#       preDeploy:                                    
+#         steps:          
+#         - script: initialize, cleanup....  
+#       deploy:            
+#         steps:
+#         - script: echo deploy updates...
+#       routeTraffic:
+#         steps:
+#         - script: echo routing traffic...
+#       postRouteTaffic:
+#         pool: server
+#         steps:          
+#         - script: echo monitor application health...  
+#       on:
+#         failure:
+#           steps:
+#           - script: echo perform rollback actions.     
+#         success:
+#           steps:
+#           - script: echo checks passed, notify...
+
 jobs:
-- deployment:
-  environment: musicCarnivalProd
+  # track deployments on the environment
+- deployment: DeployWeb
+  displayName: deploy Web App
   pool:
-    name: musicCarnivalProdPool 
-  strategy:                 
-    canary:     
-      increments: [10,20] 
-      preDeploy:                                    
-        steps:          
-        - script: initialize, cleanup....  
-      deploy:            
+    vmImage: ubuntu-latest
+  # creates an environment if it doesn't exist
+  environment: 'dev'
+  strategy:
+    # default deployment strategy, more coming...
+    runOnce:
+      deploy:
         steps:
-        - script: echo deploy updates...
-      routeTraffic:
-        steps:
-        - script: echo routing traffic...
-      postRouteTaffic:
-        pool: server
-        steps:          
-        - script: echo monitor application health...  
-      on:
-        failure:
-          steps:
-          - script: echo perform rollback actions.     
-        success:
-          steps:
-          - script: echo checks passed, notify...
+          - task: IISWebAppManagementOnMachineGroup@0
+            displayName: 'Manage IISWebsite'            
+            inputs:
+              ParentWebsiteNameForVD:
+              VirtualPathForVD:
+              ParentWebsiteNameForApplication:
+              VirtualPathForApplication:
+              AppPoolNameForApplication:
+              AppPoolName:
+              WebsiteName: MyCoreWebApp
+              AddBinding: true
+              Bindings: '{"bindings":[{"protocol":"http","ipAddress":"All Unassigned","port":"90","hostname":"","sslThumbprint":"","sniFlag":false}]}'
+              CreateOrUpdateAppPoolForWebsite: true
+              AppPoolNameForWebsite: MyCoreWebApp
+
+          - task: IISWebAppDeploymentOnMachineGroup@0
+            displayName: 'Deploy IIS Website/App'
+            inputs:
+              WebSiteName: MyCoreWebApp
+              Package: '$(System.DefaultWorkingDirectory)/_Ambara-joshi.ASPDotNetMVCRelease/drop/a.zip'
+              RemoveAdditionalFilesFlag: true
+              ExcludeFilesFromAppDataFlag: true
+              TakeAppOfflineFlag: true
