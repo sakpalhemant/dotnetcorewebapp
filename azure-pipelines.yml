@@ -1,136 +1,220 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# # ASP.NET Core
+# # Build and test ASP.NET Core projects targeting .NET Core.
+# # Add steps that run tests, create a NuGet package, deploy, and more:
+# # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- master
+# trigger:
+# - master
+
+# pool:
+#   vmImage: ubuntu-latest
+
+# variables:
+#   buildConfiguration: 'Release'
+
+# steps:
+
+# - task: SonarCloudPrepare@4
+#   inputs:
+#     SonarQube: 'sonarqubecloud'
+#     organization: 'devops-anil-1'
+#     scannerMode: 'dotnet'
+#     projectKey: 'ddevops-anil_testwebProject'
+#     projectName: 'testwebProject'
+
+
+# - script: dotnet build --configuration $(buildConfiguration)
+#   displayName: 'dotnet build $(buildConfiguration)'
+
+# # do this after other tasks such as build
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: test
+#     projects: '**/TestProject/*.csproj'
+#     arguments: '--configuration $(buildConfiguration)'
+#   displayName: 'dotnet build Test Project'
+
+# # Publish code coverage results v1
+# # Publish Cobertura or JaCoCo code coverage results from a build.
+# - task: PublishCodeCoverageResults@2
+#   inputs:
+#     summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/coverage.xml.'
+#     pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/'
+#   displayName: 'Code Coverage'
+
+
+# - task: SonarCloudAnalyze@4
+#   inputs:
+#     jdkversion: 'JAVA_HOME_17_X64'
+
+# - task: SonarCloudPublish@4
+#   inputs:
+#     pollingTimeoutSec: '600'
+
+# # - task: PublishPipelineArtifact@1
+# #   inputs:
+# #     targetPath: '$(Pipeline.Workspace)'
+# #     artifact: 'mywebapp'
+# #     publishLocation: 'pipeline'
+
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: publish
+#     publishWebProjects: false
+#     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+#     zipAfterPublish: True
+
+# - task: PublishBuildArtifacts@1
+#   displayName: 'Publish Artifact'
+#   inputs:
+#     ArtifactName: 'MyWebAPP'
+#     TargetPath: '$(Build.ArtifactStagingDirectory)' 
+
+    
+# # - task: AdvancedSecurity-Codeql-Init@1
+# #   inputs:
+# #     enableAutomaticCodeQLInstall: true
+# #     languages: 'csharp'
+# #     querysuite: 'code-scanning'
+# #     buildtype: 'None'
+# # # Build and test ASP.NET Core projects targeting .NET Core.
+# # # Add steps that run tests, create a NuGet package, deploy, and more:
+# # # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+# # - task: AdvancedSecurity-Codeql-Analyze@1
+# #   inputs:
+# #     gitHubConnection: 'sakpalhemant'
+
+# # - task: AdvancedSecurity-Codeql-Init@1
+# #   displayName: Initialize CodeQL
+# #   inputs:
+# # # build mode `none` is supported for C# but build mode `none` is NOT supported for Swift
+# # # so this pipeline definition will result in a failed run
+# #     languages: 'csharp'
+# #     buildtype: 'none'
+
+# # - task: AdvancedSecurity-Codeql-Analyze@1
+# #   displayName: Perform CodeQL Analysis
+
+# # - task: AdvancedSecurity-Publish@1
+# #   inputs:
+# #     SarifsInputDirectory: '$(Build.SolutionDirectory)/.gdn/'
+
+
+
+# - task: CopyFiles@2
+#   inputs:
+#     sourceFolder: '$(Build.SourcesDirectory)'
+#     contents: '**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
+#     targetFolder: '$(Build.ArtifactStagingDirectory)'
+# # - task: PublishBuildArtifacts@1
+# #   inputs:
+# #     pathToPublish: '$(Build.ArtifactStagingDirectory)'
+# #     artifactName: drop1
+# # - task: PublishBuildArtifacts@1
+# #   inputs:
+# #     pathToPublish: '$(Build.ArtifactStagingDirectory)'
+# #     artifactName: drop2
+
+
+# # - task: DownloadBuildArtifacts@1
+# #   displayName: 'Download Build Artifacts'
+# #   inputs:
+# #     buildType: specific                        # Options: 'current' | 'specific'. Specify which build artifacts will be downloaded: `current` or from a specific build
+# #     project: 'xxxxxxxxxx-xxxx-xxxx-xxxxxxxxxxx'    # Required when buildType == specific. Project ID.
+# #     pipeline: 20                                   # Required when buildType == specific. Build pipeline.
+# #     buildVersionToDownload: specific    # Options: 'latest' | 'latestFromBranch' | 'specific'. Required when buildType == specific. Build version to download.
+# #     buildId: 128                        # Required when buildType == specific && buildVersionToDownload == specific. Build ID.
+# #     artifactName: drop                  # The name of the artifact that will be downloaded.
+# #     extractTars: false                  # boolean. Extract all files that are stored inside tar archives.
+
+# - task: Docker@2
+#   inputs:
+#     containerRegistry: 'docker-sakpalhemant'
+#     repository:  '${{ parameters.projectPath }}'
+#     command: 'buildAndPush'
+#     Dockerfile: '**/Dockerfile'
+#     buildContext: ' .'
+
 
 pool:
-  vmImage: ubuntu-latest
+  name: Azure Pipelines
+  demands: java
 
+#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
+#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
+#Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
 variables:
-  buildConfiguration: 'Release'
+  RestoreBuildProjects: '**/*.csproj'
 
 steps:
-
-- task: SonarCloudPrepare@4
-  inputs:
-    SonarQube: 'sonarqubecloud'
-    organization: 'devops-anil-1'
-    scannerMode: 'dotnet'
-    projectKey: 'ddevops-anil_testwebProject'
-    projectName: 'testwebProject'
-
-
-- script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
-
-# do this after other tasks such as build
 - task: DotNetCoreCLI@2
+  displayName: Restore
+  inputs:
+    command: restore
+    projects: '$(Parameters.RestoreBuildProjects)'
+
+- task: SonarSource.sonarcloud.14d9cde6-c1da-4d55-aa01-2965cd301255.SonarCloudPrepare@4
+  displayName: 'Prepare analysis on SonarQube Cloud'
+  inputs:
+    SonarQube: sonarqubecloud
+    organization: sakpalhemant
+    projectKey: 'sakpalhemant_dotnetcorewebapp'
+    projectName: dotnetcorewebapp
+
+- task: DotNetCoreCLI@2
+  displayName: Build
+  inputs:
+    projects: '$(Parameters.RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+    workingDirectory: dotnetcorewebapp
+
+- task: DotNetCoreCLI@2
+  displayName: Test
   inputs:
     command: test
-    projects: '**/TestProject/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-  displayName: 'dotnet build Test Project'
+    projects: '$(Parameters.TestProjects)'
+    arguments: '--configuration $(BuildConfiguration)'
+    workingDirectory: TestProject
 
-# Publish code coverage results v1
-# Publish Cobertura or JaCoCo code coverage results from a build.
-- task: PublishCodeCoverageResults@2
+- task: PublishTestResults@2
+  displayName: 'Publish Test Results **/TEST-*.xml'
   inputs:
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/coverage.xml.'
-    pathToSources: '$(System.DefaultWorkingDirectory)/dotnetcorewebapp/'
-  displayName: 'Code Coverage'
+    testResultsFormat: VSTest
+    testRunTitle: dotnetcoreapptest
 
+- task: SonarSource.sonarcloud.ce096e50-6155-4de8-8800-4221aaeed4a1.SonarCloudAnalyze@4
+  displayName: 'Run Code Analysis'
 
-- task: SonarCloudAnalyze@4
-  inputs:
-    jdkversion: 'JAVA_HOME_17_X64'
-
-- task: SonarCloudPublish@4
-  inputs:
-    pollingTimeoutSec: '600'
-
-# - task: PublishPipelineArtifact@1
-#   inputs:
-#     targetPath: '$(Pipeline.Workspace)'
-#     artifact: 'mywebapp'
-#     publishLocation: 'pipeline'
+- task: SonarSource.sonarcloud.38b27399-a642-40af-bb7d-9971f69712e8.SonarCloudPublish@4
+  displayName: 'Publish Quality Gate Result'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Publish Zip File'
   inputs:
     command: publish
     publishWebProjects: false
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    projects: '$(Parameters.RestoreBuildProjects)'
+    arguments: '--configuration $(BuildConfiguration) --output $(build.artifactstagingdirectory)'
     zipAfterPublish: True
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
-    ArtifactName: 'MyWebAPP'
-    TargetPath: '$(Build.ArtifactStagingDirectory)' 
-
-    
-# - task: AdvancedSecurity-Codeql-Init@1
-#   inputs:
-#     enableAutomaticCodeQLInstall: true
-#     languages: 'csharp'
-#     querysuite: 'code-scanning'
-#     buildtype: 'None'
-# # Build and test ASP.NET Core projects targeting .NET Core.
-# # Add steps that run tests, create a NuGet package, deploy, and more:
-# # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-# - task: AdvancedSecurity-Codeql-Analyze@1
-#   inputs:
-#     gitHubConnection: 'sakpalhemant'
-
-# - task: AdvancedSecurity-Codeql-Init@1
-#   displayName: Initialize CodeQL
-#   inputs:
-# # build mode `none` is supported for C# but build mode `none` is NOT supported for Swift
-# # so this pipeline definition will result in a failed run
-#     languages: 'csharp'
-#     buildtype: 'none'
-
-# - task: AdvancedSecurity-Codeql-Analyze@1
-#   displayName: Perform CodeQL Analysis
-
-# - task: AdvancedSecurity-Publish@1
-#   inputs:
-#     SarifsInputDirectory: '$(Build.SolutionDirectory)/.gdn/'
-
-
-
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '**/$(BuildConfiguration)/**/?(*.exe|*.dll|*.pdb)'
-    targetFolder: '$(Build.ArtifactStagingDirectory)'
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     pathToPublish: '$(Build.ArtifactStagingDirectory)'
-#     artifactName: drop1
-# - task: PublishBuildArtifacts@1
-#   inputs:
-#     pathToPublish: '$(Build.ArtifactStagingDirectory)'
-#     artifactName: drop2
-
-
-# - task: DownloadBuildArtifacts@1
-#   displayName: 'Download Build Artifacts'
-#   inputs:
-#     buildType: specific                        # Options: 'current' | 'specific'. Specify which build artifacts will be downloaded: `current` or from a specific build
-#     project: 'xxxxxxxxxx-xxxx-xxxx-xxxxxxxxxxx'    # Required when buildType == specific. Project ID.
-#     pipeline: 20                                   # Required when buildType == specific. Build pipeline.
-#     buildVersionToDownload: specific    # Options: 'latest' | 'latestFromBranch' | 'specific'. Required when buildType == specific. Build version to download.
-#     buildId: 128                        # Required when buildType == specific && buildVersionToDownload == specific. Build ID.
-#     artifactName: drop                  # The name of the artifact that will be downloaded.
-#     extractTars: false                  # boolean. Extract all files that are stored inside tar archives.
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
 
 - task: Docker@2
+  displayName: buildAndPush
   inputs:
-    containerRegistry: 'docker-sakpalhemant'
-    repository:  '${{ parameters.projectPath }}'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    buildContext: ' .'
+    containerRegistry: docker
+    repository: sakpalhemant/dotnetcorewebapp
+
+- task: AzureRmWebAppDeployment@5
+  displayName: 'Azure App Service Deploy: dotnetcotewebapp'
+  inputs:
+    azureSubscription: 
+    appType: webAppLinux
+    WebAppName: dotnetcotewebapp
+    deployToSlotOrASE: true
+    ResourceGroupName: 'rg-demo'
+    RuntimeStack: 'DOTNETCORE|8.0'
